@@ -16,7 +16,7 @@ export default function App() {
       <HowItWorks />
       <Faq />
       <footer className="border-t border-zinc-900 py-8 text-center text-zinc-500 text-sm">
-        <p>© 2026 VIRTUAL VISA. جميع الحقوق محفوظة (مشروع تعليمي).</p>
+        <p>© 2026 VIRTUAL VISA. جميع الحقوق محفوظة </p>
       </footer>
     </div>
   );
