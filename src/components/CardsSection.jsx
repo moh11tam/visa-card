@@ -7,15 +7,14 @@ export default function CardsSection() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const cardsData = [
-    { balance: "10", pricePaypal: "5$ بايبال", priceUsdt: "5 USDT" },
-    { balance: "25", pricePaypal: "10$ بايبال", priceUsdt: "10 USDT" },
-    { balance: "50", pricePaypal: "25$ بايبال", priceUsdt: "25 USDT" },
-    { balance: "100", pricePaypal: "50$ بايبال", priceUsdt: "50 USDT" },
+    { balance: "10", priceUsdt: "5 USDT" },
+    { balance: "25", priceUsdt: "10 USDT" },
+    { balance: "50", priceUsdt: "25 USDT" },
+    { balance: "100", priceUsdt: "50 USDT" },
   ];
 
   const vipCardData = {
     balance: "1,000",
-    pricePaypal: "100$ بايبال",
     priceUsdt: "100 USDT",
     isVip: true
   };
@@ -37,7 +36,7 @@ export default function CardsSection() {
             
             <div className="w-full mt-2">
               <div className="bg-blue-950/60 border border-blue-500/30 py-2 px-4 rounded-xl mb-4 text-xs text-zinc-300">
-                <div>سعر الشراء: <span className="text-blue-400 font-bold">{card.pricePaypal}</span> / <span className="text-emerald-400 font-bold">{card.priceUsdt}</span></div>
+                <div>سعر الشراء: <span className="text-emerald-400 font-bold">{card.priceUsdt}</span></div>
               </div>
               
               <button
@@ -84,7 +83,7 @@ export default function CardsSection() {
               </div>
               <div className="flex justify-between">
                 <span>سعر العرض:</span>
-                <span className="font-bold text-yellow-400 text-base">100 USDT أو 100$ بايبال</span>
+                <span className="font-bold text-yellow-400 text-base">100 USDT</span>
               </div>
               <div className="flex justify-between">
                 <span>الحالة:</span>
