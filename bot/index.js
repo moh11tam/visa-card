@@ -3,54 +3,56 @@ const { Telegraf, Markup } = require('telegraf');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// 🔗 إضافة البروتوكول https:// للرابط
+// 🔗 رابط المتجر الرئيسي
 const WEBSITE_URL = 'https://visa-card-topaz.vercel.app'; 
 
-// 📩 نص الرسالة الترحيبية
+// 📩 نص الرسالة الترحيبية والترويجية الرئيسية
 const WELCOME_TEXT = 
-`مرحبًا بك في *VIRTUAL VISA* 💳
+`🚀 *مرحبًا بك في منصة VIRTUAL VISA الرقمية* 💳
 
-🌐 وجهتك الموثوقة للحصول على البطاقات الافتراضية والخدمات الرقمية بسرعة وسهولة.
+وجهتك الأولى والأسرع للحصول على البطاقات الافتراضية وعروض *Flash USDT* الحصرية بأسعار استثنائية!
 
-💳 بطاقات Visa & Mastercard
-💰 بطاقات برصيد بالدولار واليورو
-🎁 عروض وباقات رقمية مميزة
-🪙 خدمات الدفع والعملات الرقمية
-🎮 خدمات ومنتجات للمنصات والتطبيقات الشهيرة
-⚡ تسليم سريع ومعالجة سهلة للطلبات
+🔥 *أبرز خدماتنا وعروضنا الحصرية:*
+⚡ *عروض Flash USDT:* تحويلات سريعة وتخفيضات هائلة على أرصدة USDT.
+💳 *بطاقات Visa & Mastercard:* مشحونة بالدولار ($) واليورو (€) للشراء والاشتراكات.
+🪙 *شحن TikTok Coins:* أرصدة وباقات شحن بأسعار تنافسية.
+👑 *باقات VIP الذهبية:* رصيد كبير بتكلفة مخفضة مجنونة!
+🚀 *تسليم فوري ومباشر:* معالجة آمنة وسريعة لجميع طلباتك.
 
-نحن نسعى لتوفير تجربة شراء بسيطة، سريعة واحترافية، مع توضيح تفاصيل كل خدمة قبل إتمام الطلب.
-
-اختر ما تريد معرفته من القائمة أدناه 👇`;
+اختر الخدمة أو التفاصيل التي تريد استكشافها من الأزرار أدناه 👇`;
 
 // 🔘 لوحة الأزرار الرئيسية
 const mainKeyboard = Markup.inlineKeyboard([
-  [Markup.button.url('🌐 زيارة الموقع', WEBSITE_URL)],
-  [Markup.button.callback('📋 معرفة التفاصيل', 'DETAILS'), Markup.button.callback('💳 البطاقات المتوفرة', 'CARDS')],
-  [Markup.button.callback('🪙 الخدمات الرقمية', 'SERVICES'), Markup.button.callback('💰 طرق الدفع', 'PAYMENT')],
-  [Markup.button.callback('📦 كيفية استلام الطلب', 'HOW_IT_WORKS')],
-  [Markup.button.callback('🎧 الدعم والمساعدة', 'SUPPORT')]
+  [Markup.button.url('🌐 زيارة الموقع الرسمي', WEBSITE_URL)],
+  [Markup.button.callback('⚡ عروض Flash USDT', 'FLASH_USDT'), Markup.button.callback('💳 البطاقات الرقمية', 'CARDS')],
+  [Markup.button.callback('🪙 TikTok & الخدمات', 'SERVICES'), Markup.button.callback('💰 طرق الدفع', 'PAYMENT')],
+  [Markup.button.callback('📦 كيفية الاستلام والعمل', 'HOW_IT_WORKS'), Markup.button.callback('📋 التفاصيل والضمان', 'DETAILS')],
+  [Markup.button.callback('🎧 الدعم الفني المباشر', 'SUPPORT')]
 ]);
 
-// 🏁 الاستجابة لأوامر البدء أو الرسائل الترحيبية
+// 🏁 الاستجابة لأوامر البدء والترحيب
 bot.start((ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
-bot.hears([/hello/i, /hi/i, /هلا/i, /مرحبا/i, /السلام عليكم/i, /ستارت/i], (ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
+bot.hears([/hello/i, /hi/i, /هلا/i, /مرحبا/i, /السلام عليكم/i, /ستارت/i, /start/i], (ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
 
-// 📋 1. معرفة التفاصيل
-bot.action('DETAILS', async (ctx) => {
+// ⚡ 1. قسم Flash USDT (جديد ومفصل)
+bot.action('FLASH_USDT', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `📋 *معرفة التفاصيل:*
+  const text = `⚡ *عروض Flash USDT الاستثنائية:*
 
-تعرف على المنتجات، الأسعار، طرق الدفع وآلية الطلب.
-يقدم متجرنا بطاقات رقمية افتراضية عالية الجودة ومقبولة عالمياً للشراء من الإنترنت والاشتراكات. 
+احصل على أرصدة USDT بأقل تكلفة ممكنة مع سرعة تحويل فائقة على محافظك!
 
-نوفر تسليماً فورياً وضماناً شاملاً لكافة البطاقات والخدمات الرقمية.`;
+🔥 *المميزات والخصائص:*
+• **أسعار تنافسية:** كميات مرتفعة بخصومات تصل حتى 80%.
+• **شبكات متعددة:** دعم كامل لشبكات Tron (TRC20) وBNB Smart Chain (BEP20).
+• **استلام سريع:** إرسال فوري إلى عنوان محفظتك بعد التأكيد.
+
+💡 *مثالي للاستخدام السريع، شحن الحسابات، والخدمات الرقمية المختلفة.*`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🌐 الانتقال للموقع الآن', WEBSITE_URL)],
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🔥 احصل على Flash USDT الآن', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
@@ -58,41 +60,41 @@ bot.action('DETAILS', async (ctx) => {
 // 💳 2. البطاقات المتوفرة
 bot.action('CARDS', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `💳 *البطاقات المتوفرة:*
+  const text = `💳 *البطاقات الافتراضية المتوفرة:*
 
-استعرض بطاقات Visa وMastercard والباقات المتاحة:
+بطاقات مسبقة الدفع مقبولة عالمياً لتفعيل الاشتراكات والتسوق عبر الإنترنت:
 
-• بطاقة Visa افتراضية ($10 - $1,000)
-• بطاقة Mastercard مشحونة بالدولار واليورو
-• باقة النخبة VIP الاستثنائية
+• **بطاقات Visa (USD):** أرصدة تبدأ من $10 وحتى $1,000.
+• **بطاقات Mastercard (EUR):** مشحونة برصيد اليورو (€10 - €100).
+• **باقة VIP Gold (€1,000):** احصل على رصيد €1,000 بسعر $500 USDT فقط!
 
-جميع البطاقات جاهزة للتفعيل والاستخدام المباشر.`;
+✨ جميع البطاقات مشحونة وجاهزة للاستخدام الفوري.`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🛒 استعراض الشراء بالموقع', WEBSITE_URL)],
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🛒 شراء بطاقة الآن', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
 
-// 🪙 3. الخدمات الرقمية
+// 🪙 3. الخدمات الرقمية و TikTok
 bot.action('SERVICES', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `🪙 *الخدمات الرقمية:*
+  const text = `🪙 *الخدمات الرقمية وشحن Coins:*
 
-اكتشف الخدمات الرقمية المتوفرة داخل المتجر:
+نوفر لك أفضل الحلول الرقمية لشحن حساباتك بأسعار مخفضة:
 
-• شحن المحافظ والعملات الرقمية (USDT)
-• تفعيل اشتراكات المنصات والألعاب الشهيرة
-• خدمات دفع وتحويل الأموال عبر الإنترنت`;
+• **TikTok Coins:** شحن عملات تيك توك وتوفير يصل إلى 80%.
+• **اشتراكات وتفعيلات:** تفعيل المنصات والتطبيقات الشهيرة.
+• **تحويلات سريعة:** خدمة شحن المحافظ والعملات الرقمية.`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🌐 استكشف الخدمات بالموقع', WEBSITE_URL)],
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🌐 استكشف العروض بالموقع', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
@@ -100,18 +102,22 @@ bot.action('SERVICES', async (ctx) => {
 // 💰 4. طرق الدفع
 bot.action('PAYMENT', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `💰 *طرق الدفع:*
+  const text = `💰 *طرق الدفع المتاحة:*
 
-تعرف على طرق الدفع والمحافظ المتاحة:
+نوفر عملية دفع آمنة وسلسة عبر العملات المشفرة:
 
-• العملات الرقمية المشفرة: *USDT (TRC20 / TON / BEP20)*
-• معالجة فورية وتأكيد تلقائي عبر الموقع.`;
+• **العملات المقبولة:** USDT
+• **الشبكات المدعومة:** 
+  - Tron (TRC20)
+  - BNB Smart Chain (BEP20)
+
+⚡ معالجة فورية وتأكيد تلقائي للطلبات فور إرفاق إثبات الدفع (TXID).`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🌐 الشراء عبر الموقع', WEBSITE_URL)],
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🌐 الانتقال للدفع بالموقع', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
@@ -119,36 +125,57 @@ bot.action('PAYMENT', async (ctx) => {
 // 📦 5. كيفية استلام الطلب
 bot.action('HOW_IT_WORKS', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `📦 *كيفية استلام الطلب:*
+  const text = `📦 *خطوات الطلب والاستلام:*
 
-تعرف على خطوات الطلب والتأكيد والتسليم:
-
-1. اختر البطاقة أو الخدمة المطلوب شراءها من الموقع.
-2. أتمم عملية الدفع بواسطة USDT.
-3. يستلم النظام طلبك ويتم استخراج وتزويدك ببيانات البطاقة مباشرة!`;
+1️⃣ **الخيار:** حدد البطاقة أو عرض Flash USDT المطلوب من الموقع.
+2️⃣ **البيانات:** أدخل بريدك الإلكتروني وعنوان محفظتك (في حال طلب Flash USDT).
+3️⃣ **الدفع:** حوّل المبلغ المطلوب بـ USDT وأرفق رمز المعاملة (TXID) ولقطة الشاشة.
+4️⃣ **التسليم:** يتم التحقق واستلام تفاصيل طلبك مباشرة على بريدك الإلكتروني!`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🌐 اطلب الآن من الموقع', WEBSITE_URL)],
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🚀 ابدأ الطلب الآن', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
 
-// 🎧 6. الدعم والمساعدة
-bot.action('SUPPORT', async (ctx) => {
+// 📋 6. معرفة التفاصيل
+bot.action('DETAILS', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `🎧 *الدعم والمساعدة:*
+  const text = `📋 *حول متجر VIRTUAL VISA:*
 
-تواصل معنا إذا كان لديك أي استفسار أو مشكلة:
+نحن منصة متخصصة في تقديم حلول الدفع الرقمي والبطاقات الافتراضية.
 
-📩 حساب الدعم الفني: @moh11milano`;
+✔️ بطاقات مقبولة في مختلف المتواجر والخدمات.
+✔️ ضمان كامل لجميع المنتجات والأرصدة.
+✔️ سرعة في التنفيذ ودعم فني متواصل.`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.callback('⬅️ عودة للقائمة الرئيسية', 'MAIN_MENU')]
+      [Markup.button.url('🌐 تصفح الموقع', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
+    ])
+  });
+});
+
+// 🎧 7. الدعم والمساعدة
+bot.action('SUPPORT', async (ctx) => {
+  await ctx.answerCbQuery();
+  const text = `🎧 *مركز الدعم الفني:*
+
+هل لديك استفسار أو تحتاج مساعدة في تنفيذ طلبك؟
+
+📩 تواصل مباشر مع المسؤول: @moh11milano
+⏱️ أوقات العمل: متواجدون لخدمتك على مدار الساعة.`;
+
+  ctx.editMessageText(text, {
+    parse_mode: 'Markdown',
+    ...Markup.inlineKeyboard([
+      [Markup.button.url('💬 مراسلة الدعم', 'https://t.me/moh11milano')],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
@@ -163,7 +190,7 @@ bot.action('MAIN_MENU', async (ctx) => {
 });
 
 // تشغيل البوت
-bot.launch().then(() => console.log('🚀 بوت البوابة يعمل بنجاح!'));
+bot.launch().then(() => console.log('🚀 بوت VIRTUAL VISA يعمل بنجاح!'));
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
