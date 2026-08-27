@@ -72,25 +72,6 @@ export default function FlashUsdtSection() {
 
   return (
     <section id="flash-usdt" className="py-24 bg-black text-white relative overflow-hidden select-none">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        .digital-font-straight {
-          font-family: 'Share Tech Mono', monospace;
-          font-style: normal;
-          letter-spacing: 2px;
-        }
-
-        .digital-glow-blue {
-          text-shadow: 0 0 10px rgba(59, 130, 246, 0.9), 0 0 20px rgba(59, 130, 246, 0.6);
-        }
-
-        .number-glow-gold {
-          color: #f59e0b;
-          text-shadow: 0 0 12px rgba(245, 158, 11, 0.9), 0 0 25px rgba(245, 158, 11, 0.5);
-        }
-      `}</style>
-
       {/* خلفية التوهج العام */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -147,14 +128,14 @@ export default function FlashUsdtSection() {
                       </span>
                     </div>
 
-                    <div className="text-4xl font-black text-cyan-300 digital-font-straight digital-glow-blue flex items-baseline gap-2">
+                    <div className="text-4xl font-black text-cyan-300 flex items-baseline gap-2">
                       {card.balance} <span className="text-base font-bold text-blue-400">Flash USDT</span>
                     </div>
                   </div>
 
                   <div className="my-6 p-4 rounded-2xl bg-black/50 border border-white/5 flex items-baseline justify-between" style={{ transform: isHovered ? 'translateZ(25px)' : 'translateZ(0px)' }}>
                     <span className="text-gray-400 text-sm">السعر:</span>
-                    <span className="text-2xl font-black text-emerald-400 digital-font-straight digital-glow-blue">{card.priceUsdt} USDT</span>
+                    <span className="text-2xl font-black text-emerald-400">{card.priceUsdt} USDT</span>
                   </div>
 
                   <ul className="space-y-3 mb-8" style={{ transform: isHovered ? 'translateZ(20px)' : 'translateZ(0px)' }}>
@@ -213,7 +194,7 @@ export default function FlashUsdtSection() {
 
                 <div>
                   <span className="text-gray-400 text-xs font-semibold block mb-2 uppercase">رصيد الباقة الاستثنائية</span>
-                  <h3 className="text-5xl md:text-7xl font-black digital-font-straight number-glow-gold tracking-wider">
+                  <h3 className="text-5xl md:text-7xl font-black text-amber-400 tracking-wider">
                     100,000 <span className="text-2xl md:text-3xl text-amber-500 font-sans tracking-normal">Flash USDT</span>
                   </h3>
                 </div>
@@ -238,7 +219,7 @@ export default function FlashUsdtSection() {
                 <div className="bg-black border border-zinc-800 rounded-3xl p-8 text-center space-y-6">
                   <div className="text-sm text-gray-400 font-semibold uppercase tracking-wider">السعر الحصري</div>
                   
-                  <div className="text-5xl md:text-6xl font-black digital-font-straight number-glow-gold">
+                  <div className="text-5xl md:text-6xl font-black text-amber-400">
                     1,000 <span className="text-xl text-amber-500 font-sans">USDT</span>
                   </div>
 
