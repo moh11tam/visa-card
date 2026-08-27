@@ -6,16 +6,19 @@ import { Star, Sparkles } from 'lucide-react';
 export default function CardsSection() {
   const [selectedCard, setSelectedCard] = useState(null);
 
+  // هنا يمكنك إضافة أو تعديل أي بطاقة بتحديد الاسم، الرصيد، السعر، والعملة
   const cardsData = [
-    { balance: "10", priceUsdt: "5 USDT" },
-    { balance: "25", priceUsdt: "10 USDT" },
-    { balance: "50", priceUsdt: "25 USDT" },
-    { balance: "100", priceUsdt: "50 USDT" },
+    { title: "Mastercard Virtual", balance: "10", priceUsdt: "6 USDT", currency: "€" },
+    { title: "Visa Virtual", balance: "25", priceUsdt: "10 USDT", currency: "$" },
+    { title: "Flash USDT", balance: "500", priceUsdt: "25 USDT", currency: "USDT", type: "flash" },
+    { title: "Visa Virtual", balance: "100", priceUsdt: "50 USDT", currency: "$" },
   ];
 
   const vipCardData = {
+    title: "Visa VIP Elite",
     balance: "1,000",
     priceUsdt: "100 USDT",
+    currency: "$",
     isVip: true
   };
 
@@ -35,6 +38,7 @@ export default function CardsSection() {
             </div>
             
             <div className="w-full mt-2">
+              <h4 className="text-white font-bold text-sm mb-1">{card.title}</h4>
               <div className="bg-blue-950/60 border border-blue-500/30 py-2 px-4 rounded-xl mb-4 text-xs text-zinc-300">
                 <div>سعر الشراء: <span className="text-emerald-400 font-bold">{card.priceUsdt}</span></div>
               </div>

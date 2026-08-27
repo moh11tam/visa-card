@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { X, ArrowRight, Copy, Check, Upload, AlertTriangle, CheckCircle2, ShieldCheck, FileText } from 'lucide-react';
+import { X, ArrowRight, Copy, Check, Upload, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
 
-// شعار USDT الرسمية SVG
 const UsdtIcon = () => (
   <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="12" r="10" fill="#26A17B"/>
@@ -10,20 +9,31 @@ const UsdtIcon = () => (
 );
 
 export default function PaymentModal({ card, onClose }) {
-  // المراحل: 1 (معلومات الطلب) | 2 (اختر المحفظة والشبكة) | 3 (تأكيد وإرفاق إثبات الدفع) | 4 (تم استلام الطلب)
-  const [step, setStep] = useState(1);
+  const isFlashUsdt = card?.type === 'flash' || card?.title?.toLowerCase().includes('flash') || card?.name?.toLowerCase().includes('flash');
+  
+  // تحديد عملة البطاقة ديناميكياً (EUR أو USD أو حسب ما هو قادم من الأب)
+  const cardCurrency = card?.currency || (
+    card?.title?.toLowerCase().includes('euro') || 
+    card?.title?.includes('€') || 
+    card?.title?.toLowerCase().includes('mastercard') ? 'EUR' : 'USD'
+  );
+  const currencySymbol = cardCurrency === 'EUR' ? '€' : '$';
 
-  // حالة نموذج العميل (المرحلة 1)
+  const cardBalance = card?.balance || card?.amount || '10,000';
+  const cardPrice = card?.priceUsdt || card?.price || '100';
+
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    walletAddress: '',
   });
 
-  // رقم الطلب المنشأ تلقائياً
   const [orderId] = useState(() => `VZ-${Math.floor(10000 + Math.random() * 90000)}`);
 
-  // بيانات الشبكات الخاصة بك
   const networksData = [
     { 
       id: 'trc20', 
@@ -42,7 +52,6 @@ export default function PaymentModal({ card, onClose }) {
   const [selectedNetwork, setSelectedNetwork] = useState(networksData[0]);
   const [copied, setCopied] = useState(false);
 
-  // حالة المرحلة 3 (إثبات الدفع)
   const [txid, setTxid] = useState('');
   const [screenshot, setScreenshot] = useState(null);
 
@@ -61,33 +70,63 @@ export default function PaymentModal({ card, onClose }) {
   const handleStep1Submit = (e) => {
     e.preventDefault();
     if (!formData.firstName || !formData.lastName || !formData.email) return;
+    if (isFlashUsdt && !formData.walletAddress) return;
     setStep(2);
   };
 
-  const handleStep3Submit = (e) => {
+  const handleStep3Submit = async (e) => {
     e.preventDefault();
-    setStep(4);
+    setLoading(true);
+
+    try {
+      const payload = new FormData();
+      payload.append('orderId', orderId);
+      payload.append('firstName', formData.firstName);
+      payload.append('lastName', formData.lastName);
+      payload.append('email', formData.email);
+      payload.append('userWallet', formData.walletAddress);
+      payload.append('network', selectedNetwork.name);
+      payload.append('cardTitle', card?.title || 'Card Order');
+      payload.append('amount', `${currencySymbol}${cardBalance} ${cardCurrency}`);
+      payload.append('price', cardPrice);
+      payload.append('txid', txid);
+      if (screenshot) payload.append('screenshot', screenshot);
+
+      /* 
+      await fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        body: payload,
+      });
+      */
+
+      setStep(4);
+    } catch (err) {
+      console.error(err);
+      setStep(4);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto">
       <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-lg p-6 md:p-8 relative shadow-2xl text-white dir-rtl" dir="rtl">
         
-        {/* زر الإغلاق */}
         <button onClick={onClose} className="absolute top-5 left-5 text-zinc-400 hover:text-white transition">
           <X className="w-6 h-6" />
         </button>
 
-        {/* 📋 المرحلة 1 — معلومات الطلب */}
+        {/* المرحلة 1 */}
         {step === 1 && (
           <div>
             <div className="text-center mb-6">
               <span className="text-xs font-bold text-blue-400 tracking-widest uppercase block mb-1">المرحلة 1 من 3</span>
               <h3 className="text-2xl font-bold">إتمام الطلب</h3>
-              <p className="text-zinc-400 text-xs mt-1">أدخل بياناتك الأساسية لإصدار البطاقة الافتراضية</p>
+              <p className="text-zinc-400 text-xs mt-1">
+                {isFlashUsdt ? "أدخل بياناتك ومحفظتك لاستلام رصيد Flash USDT" : "أدخل بياناتك الأساسية لإصدار البطاقة الافتراضية"}
+              </p>
             </div>
 
-            {/* تفاصيل البطاقة المختارة */}
             <div className="bg-zinc-950/80 border border-blue-500/20 p-4 rounded-2xl mb-6 space-y-2 text-xs md:text-sm">
               <div className="flex justify-between text-zinc-400">
                 <span>رقم الطلب:</span>
@@ -95,15 +134,20 @@ export default function PaymentModal({ card, onClose }) {
               </div>
               <div className="flex justify-between text-zinc-400">
                 <span>البطاقة المختارة:</span>
-                <span className="font-bold text-white">Visa Virtual — ${card.balance} USD</span>
+                <span className="font-bold text-white">
+                  {isFlashUsdt 
+                    ? `Flash USDT — ${cardBalance} USDT` 
+                    : `${card?.title || 'Virtual Card'} — ${currencySymbol}${cardBalance} ${cardCurrency}`}
+                </span>
               </div>
               <div className="flex justify-between border-t border-zinc-800 pt-2 text-white">
                 <span>المبلغ المستحق:</span>
-                <span className="font-bold text-emerald-400 text-base">{card.priceUsdt}</span>
+                <span className="font-bold text-emerald-400 text-base">
+                  {cardPrice} {typeof cardPrice === 'number' || !String(cardPrice).includes('USDT') ? 'USDT' : ''}
+                </span>
               </div>
             </div>
 
-            {/* نموذج إدخال البيانات */}
             <form onSubmit={handleStep1Submit} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -140,8 +184,24 @@ export default function PaymentModal({ card, onClose }) {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition"
                 />
-                <p className="text-[10px] text-zinc-500 mt-1">سنرسل تفاصيل البطاقة ورقم السر إلى هذا البريد.</p>
+                <p className="text-[10px] text-zinc-500 mt-1">
+                  {isFlashUsdt ? "سنرسل إشعار التحويل وتأكيد الطلب إلى هذا البريد." : "سنرسل تفاصيل البطاقة ورقم السر إلى هذا البريد."}
+                </p>
               </div>
+
+              {isFlashUsdt && (
+                <div>
+                  <label className="text-xs text-zinc-400 block mb-1">عنوان محفظة الاستلام (Flash USDT) *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="أدخل عنوان محفظتك (TRC20 / BEP20)"
+                    value={formData.walletAddress}
+                    onChange={(e) => setFormData({ ...formData, walletAddress: e.target.value })}
+                    className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm font-mono text-cyan-300 focus:outline-none focus:border-blue-500 transition"
+                  />
+                </div>
+              )}
 
               <button
                 type="submit"
@@ -153,7 +213,7 @@ export default function PaymentModal({ card, onClose }) {
           </div>
         )}
 
-        {/* 💰 المرحلة 2 — اختيار طريقة الدفع والشبكة */}
+        {/* المرحلة 2 */}
         {step === 2 && (
           <div>
             <button onClick={() => setStep(1)} className="text-xs text-blue-400 mb-4 flex items-center gap-1 hover:underline">
@@ -166,7 +226,6 @@ export default function PaymentModal({ card, onClose }) {
               <p className="text-zinc-400 text-xs mt-1">اختر شبكة التحويل وحوّل المبلغ المطلوب</p>
             </div>
 
-            {/* اختيار الشبكة */}
             <div className="space-y-2 mb-4">
               <label className="text-xs text-zinc-400 block">اختر شبكة التحويل:</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -190,11 +249,12 @@ export default function PaymentModal({ card, onClose }) {
               </div>
             </div>
 
-            {/* تفاصيل عنوان المحفظة للشبكة المختارة */}
             <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 mb-4 space-y-3">
               <div className="flex justify-between items-center text-xs">
                 <span className="text-zinc-400">المبلغ المطلوب تحويله:</span>
-                <span className="font-bold text-emerald-400 text-sm">{card.priceUsdt}</span>
+                <span className="font-bold text-emerald-400 text-sm">
+                  {cardPrice} {typeof cardPrice === 'number' || !String(cardPrice).includes('USDT') ? 'USDT' : ''}
+                </span>
               </div>
 
               <div>
@@ -212,7 +272,6 @@ export default function PaymentModal({ card, onClose }) {
               </div>
             </div>
 
-            {/* ⚠️ نص تحذيري محترف كصفحة المنصات العالمية */}
             <div className="bg-amber-950/30 border border-amber-500/40 rounded-2xl p-3.5 mb-5 flex gap-3 items-start text-amber-200/90 text-xs leading-relaxed">
               <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
               <div>
@@ -230,7 +289,7 @@ export default function PaymentModal({ card, onClose }) {
           </div>
         )}
 
-        {/* 📸 المرحلة 3 — تأكيد الدفع وإرفاق الإثبات */}
+        {/* المرحلة 3 */}
         {step === 3 && (
           <div>
             <button onClick={() => setStep(2)} className="text-xs text-blue-400 mb-4 flex items-center gap-1 hover:underline">
@@ -246,7 +305,9 @@ export default function PaymentModal({ card, onClose }) {
             <div className="bg-zinc-950 border border-zinc-800 p-3.5 rounded-xl mb-5 space-y-1.5 text-xs text-zinc-300">
               <div className="flex justify-between">
                 <span>المبلغ المدفوع:</span>
-                <span className="font-bold text-emerald-400">{card.priceUsdt}</span>
+                <span className="font-bold text-emerald-400">
+                  {cardPrice} {typeof cardPrice === 'number' || !String(cardPrice).includes('USDT') ? 'USDT' : ''}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>طريقة الدفع:</span>
@@ -255,8 +316,6 @@ export default function PaymentModal({ card, onClose }) {
             </div>
 
             <form onSubmit={handleStep3Submit} className="space-y-4">
-              
-              {/* حقل TXID */}
               <div>
                 <label className="text-xs text-zinc-300 font-bold block mb-1">
                   رقم المعاملة Transaction ID / TXID *
@@ -272,7 +331,6 @@ export default function PaymentModal({ card, onClose }) {
                 <p className="text-[10px] text-zinc-500 mt-1">تجد هذا الرمز في تفاصيل الحوالة داخل منصتك (Binance, Bybit...)</p>
               </div>
 
-              {/* حقل لقطة الشاشة */}
               <div>
                 <label className="text-xs text-zinc-300 font-bold block mb-1">
                   إرفاق إثبات الدفع (لقطة شاشة) *
@@ -295,15 +353,23 @@ export default function PaymentModal({ card, onClose }) {
 
               <button
                 type="submit"
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm mt-2"
+                disabled={loading}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm mt-2 flex items-center justify-center gap-2"
               >
-                إرسال الطلب للمراجعة
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    جاري الإرسال...
+                  </>
+                ) : (
+                  'إرسال الطلب للمراجعة'
+                )}
               </button>
             </form>
           </div>
         )}
 
-        {/* ✅ المرحلة 4 — بعد الإرسال (تأكيد التسليم) */}
+        {/* المرحلة 4 */}
         {step === 4 && (
           <div className="text-center py-6 space-y-4">
             <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto text-emerald-400">
@@ -324,7 +390,7 @@ export default function PaymentModal({ card, onClose }) {
             </div>
 
             <p className="text-xs text-zinc-300 max-w-sm mx-auto leading-relaxed">
-              تم إرسال إثبات الدفع للمراجعة. سنرسل تحديث الطلب وبيانات بطاقتك الافتراضية إلى بريدك الإلكتروني: <br />
+              تم إرسال إثبات الدفع للمراجعة. سنرسل تحديث الطلب {isFlashUsdt ? "وإشعارات التحويل" : "وبيانات بطاقتك الافتراضية"} إلى بريدك الإلكتروني: <br />
               <span className="text-blue-400 font-bold dir-ltr inline-block mt-1">{formData.email}</span>
             </p>
 

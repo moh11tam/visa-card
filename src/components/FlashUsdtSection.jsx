@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Zap, CheckCircle2, ShieldCheck, ArrowRight, Flame, ShieldAlert } from 'lucide-react';
+import PaymentModal from './PaymentModal'; // استدعاء النافذة المنبثقة
 
-export default function FlashUsdtSection({ onSelectCard }) {
+export default function FlashUsdtSection() {
   const [rotate, setRotate] = useState({ x: 0, y: 0, cardIndex: null });
+  
+  // 1. حالة إدارة النافذة المنبثقة داخل قسم الفلاش مباشرة
+  const [selectedCard, setSelectedCard] = useState(null);
 
   // تفاعل التمرير يعمل فقط مع الماوس لعدم إعاقة سحب الشاشة على الهواتف
   const handleMouseMove = (e, index) => {
@@ -26,24 +30,31 @@ export default function FlashUsdtSection({ onSelectCard }) {
 
   const handleReset = () => setRotate({ x: 0, y: 0, cardIndex: null });
 
+  // 2. تحديث هيكلية البيانات لتبدو واضحة داخل PaymentModal
   const normalCards = [
     {
+      id: 'flash_10k',
       title: "Flash USDT Card",
-      amount: "10,000",
+      balance: "10,000",
+      priceUsdt: "100",
       price: "100",
       badge: "الأكثر طلباً",
       features: ["ثبات في المحفظة 100%", "دعم شبكة TRC-20", "معاملة آمنة ومضمونة", "دعم فني 24/7"]
     },
     {
+      id: 'flash_25k',
       title: "Flash USDT Card",
-      amount: "25,000",
+      balance: "25,000",
+      priceUsdt: "250",
       price: "250",
       badge: "خيار مميز",
       features: ["ثبات في المحفظة 100%", "دعم شبكة TRC-20", "أولوية المعالجة والتنفيذ", "دعم فني خاص VIP"]
     },
     {
+      id: 'flash_50k',
       title: "Flash USDT Card",
-      amount: "50,000",
+      balance: "50,000",
+      priceUsdt: "500",
       price: "500",
       badge: "الباقة الكبرى",
       features: ["ثبات في المحفظة 100%", "دعم جميع الشبكات", "تأكيد فوري للـ Blockchain", "مدير حساب خاص"]
@@ -51,9 +62,12 @@ export default function FlashUsdtSection({ onSelectCard }) {
   ];
 
   const vipCard = {
+    id: 'flash_vip',
     title: "VIP Flash USDT Card",
-    amount: "100,000",
-    price: "1000"
+    balance: "100,000",
+    priceUsdt: "1000",
+    price: "1000",
+    isVip: true
   };
 
   return (
@@ -90,7 +104,7 @@ export default function FlashUsdtSection({ onSelectCard }) {
             بطاقات <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-500 bg-clip-text text-transparent">Flash USDT</span> الذكية
           </h2>
           <p className="text-gray-400 text-base md:text-lg">
-                بطاقات مشفرة وموثقة بتأكيد فوري...
+            بطاقات مشفرة وموثقة بتأكيد فوري...
           </p>
         </div>
 
@@ -134,13 +148,13 @@ export default function FlashUsdtSection({ onSelectCard }) {
                     </div>
 
                     <div className="text-4xl font-black text-cyan-300 digital-font-straight digital-glow-blue flex items-baseline gap-2">
-                      {card.amount} <span className="text-base font-bold text-blue-400">Flash USDT</span>
+                      {card.balance} <span className="text-base font-bold text-blue-400">Flash USDT</span>
                     </div>
                   </div>
 
                   <div className="my-6 p-4 rounded-2xl bg-black/50 border border-white/5 flex items-baseline justify-between" style={{ transform: isHovered ? 'translateZ(25px)' : 'translateZ(0px)' }}>
                     <span className="text-gray-400 text-sm">السعر:</span>
-                    <span className="text-2xl font-black text-emerald-400 digital-font-straight digital-glow-blue">{card.price} USDT</span>
+                    <span className="text-2xl font-black text-emerald-400 digital-font-straight digital-glow-blue">{card.priceUsdt} USDT</span>
                   </div>
 
                   <ul className="space-y-3 mb-8" style={{ transform: isHovered ? 'translateZ(20px)' : 'translateZ(0px)' }}>
@@ -153,7 +167,7 @@ export default function FlashUsdtSection({ onSelectCard }) {
                   </ul>
 
                   <button
-                    onClick={() => onSelectCard && onSelectCard(card)}
+                    onClick={() => setSelectedCard(card)}
                     style={{ transform: isHovered ? 'translateZ(30px)' : 'translateZ(0px)' }}
                     className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95"
                   >
@@ -229,7 +243,7 @@ export default function FlashUsdtSection({ onSelectCard }) {
                   </div>
 
                   <button 
-                    onClick={() => onSelectCard && onSelectCard(vipCard)}
+                    onClick={() => setSelectedCard(vipCard)}
                     className="w-full py-4 px-8 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black text-lg text-center transition-all duration-300 flex items-center justify-center gap-3 active:scale-95"
                   >
                     <span>اطلب العرض الاستثنائي</span>
@@ -242,6 +256,11 @@ export default function FlashUsdtSection({ onSelectCard }) {
         </div>
 
       </div>
+
+      {/* 3. ربط النافذة المنبثقة مباشرة عند النقر على أي بطاقة */}
+      {selectedCard && (
+        <PaymentModal card={selectedCard} onClose={() => setSelectedCard(null)} />
+      )}
     </section>
   );
 }

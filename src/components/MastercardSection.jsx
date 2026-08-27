@@ -7,19 +7,65 @@ export default function MastercardSection() {
 
   // بطاقات Mastercard باليورو (€)
   const mastercardCards = [
-    { id: 'mc10', type: 'Mastercard Virtual', balance: 10, currency: '€', priceUsdt: '6 USDT', originalPrice: '10 USDT', cardBg: 'from-slate-900 via-emerald-950 to-zinc-900', accent: 'emerald' },
-    { id: 'mc25', type: 'Mastercard Virtual', balance: 25, currency: '€', priceUsdt: '12 USDT', originalPrice: '25 USDT', cardBg: 'from-zinc-900 via-teal-950 to-zinc-900', accent: 'emerald' },
-    { id: 'mc50', type: 'Mastercard Virtual', balance: 50, currency: '€', priceUsdt: '30 USDT', originalPrice: '50 USDT', cardBg: 'from-zinc-900 via-emerald-900 to-black', accent: 'emerald' },
-    { id: 'mc100', type: 'Mastercard Virtual', balance: 100, currency: '€', priceUsdt: '70 USDT', originalPrice: '100 USDT', cardBg: 'from-emerald-950 via-zinc-900 to-black', accent: 'emerald' }
+    { 
+      id: 'mc10', 
+      title: 'Mastercard Virtual €10', 
+      type: 'mastercard', 
+      balance: 10, 
+      currency: 'EUR', 
+      priceUsdt: '6 USDT', 
+      price: '6',
+      originalPrice: '10 USDT', 
+      cardBg: 'from-slate-900 via-emerald-950 to-zinc-900', 
+      accent: 'emerald' 
+    },
+    { 
+      id: 'mc25', 
+      title: 'Mastercard Virtual €25', 
+      type: 'mastercard', 
+      balance: 25, 
+      currency: 'EUR', 
+      priceUsdt: '12 USDT', 
+      price: '12',
+      originalPrice: '25 USDT', 
+      cardBg: 'from-zinc-900 via-teal-950 to-zinc-900', 
+      accent: 'emerald' 
+    },
+    { 
+      id: 'mc50', 
+      title: 'Mastercard Virtual €50', 
+      type: 'mastercard', 
+      balance: 50, 
+      currency: 'EUR', 
+      priceUsdt: '30 USDT', 
+      price: '30',
+      originalPrice: '50 USDT', 
+      cardBg: 'from-zinc-900 via-emerald-900 to-black', 
+      accent: 'emerald' 
+    },
+    { 
+      id: 'mc100', 
+      title: 'Mastercard Virtual €100', 
+      type: 'mastercard', 
+      balance: 100, 
+      currency: 'EUR', 
+      priceUsdt: '70 USDT', 
+      price: '70',
+      originalPrice: '100 USDT', 
+      cardBg: 'from-emerald-950 via-zinc-900 to-black', 
+      accent: 'emerald' 
+    }
   ];
 
   // العرض الاستثنائي €1,000 باللون الأصفر الذهبي VIP
   const specialOffer = {
     id: 'mc1000',
-    type: 'Mastercard Virtual VIP Gold',
-    balance: 1000,
-    currency: '€',
+    title: 'Mastercard Virtual VIP Gold €1,000',
+    type: 'mastercard',
+    balance: '1,000',
+    currency: 'EUR',
     priceUsdt: '500 USDT',
+    price: '500',
     originalPrice: '1000 USDT'
   };
 
@@ -87,7 +133,7 @@ export default function MastercardSection() {
         </div>
       </section>
 
-      {/* 💳 3. قسم بطاقات Mastercard (EUR) بتصميم واقعي 4D */}
+      {/* 💳 3. قسم بطاقات Mastercard (EUR) */}
       <section id="mastercard-list" className="max-w-7xl mx-auto space-y-8">
         <div className="text-right">
           <h3 className="text-2xl md:text-3xl font-bold text-emerald-400 flex items-center gap-2">
@@ -104,13 +150,11 @@ export default function MastercardSection() {
               key={card.id} 
               className="group relative bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 hover:border-emerald-500/60 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/15 flex flex-col justify-between space-y-6 overflow-hidden"
             >
-              {/* مجسم البطاقة الواقعي (4D Card Look) */}
+              {/* مجسم البطاقة */}
               <div className={`w-full aspect-[1.58/1] rounded-2xl bg-gradient-to-tr ${card.cardBg} p-4 border border-white/10 shadow-xl flex flex-col justify-between relative overflow-hidden group-hover:scale-[1.02] transition-transform`}>
                 
-                {/* تأثير اللمعان الثلاثي الأبعاد */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none"></div>
 
-                {/* الشريحة الإلكترونية والشعار */}
                 <div className="flex justify-between items-start z-10">
                   <div className="w-9 h-7 bg-amber-400/80 rounded-md border border-amber-300/50 flex items-center justify-center shadow-inner">
                     <div className="w-full h-[1px] bg-amber-900/40 my-[2px]"></div>
@@ -118,13 +162,11 @@ export default function MastercardSection() {
                   <span className="text-[11px] font-mono tracking-widest text-emerald-400 font-bold uppercase">Virtual</span>
                 </div>
 
-                {/* القيمة داخل البطاقة */}
                 <div className="z-10">
                   <div className="text-[10px] text-zinc-400 uppercase font-mono tracking-wider">Balance</div>
                   <div className="text-2xl font-black text-white font-mono tracking-tight">€{card.balance}.00</div>
                 </div>
 
-                {/* دوائر Mastercard الشهيرة + النمط */}
                 <div className="flex justify-between items-end z-10">
                   <div className="text-[9px] font-mono text-zinc-400 tracking-widest">•••• •••• •••• {card.balance}</div>
                   <div className="flex -space-x-2">
@@ -153,11 +195,10 @@ export default function MastercardSection() {
         </div>
       </section>
 
-      {/* 🔥 4. العرض الاستثنائي €1,000 (تصميم VIP ذهبي فاخر 4D) */}
+      {/* 🔥 4. العرض الاستثنائي €1,000 */}
       <section className="max-w-4xl mx-auto">
         <div className="relative group bg-gradient-to-br from-amber-950/80 via-zinc-900 to-amber-900/50 border-2 border-amber-500/70 rounded-3xl p-6 md:p-10 text-center space-y-6 shadow-[0_0_50px_rgba(245,158,11,0.2)] overflow-hidden">
           
-          {/* تأثير اللمعان الذهبي المتوهج */}
           <div className="absolute -top-24 -left-24 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
           <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -165,7 +206,6 @@ export default function MastercardSection() {
             <Flame className="w-4 h-4 text-amber-400 animate-pulse" /> 🔥 العرض الاستثنائي — عرض محدود
           </div>
 
-          {/* مجسم بطاقة VIP الذهبية */}
           <div className="max-w-md mx-auto aspect-[1.58/1] rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-6 text-black border border-amber-200/60 shadow-2xl flex flex-col justify-between relative transform group-hover:scale-105 transition-transform duration-500 my-4 text-right">
             
             <div className="flex justify-between items-start">
@@ -277,7 +317,7 @@ export default function MastercardSection() {
         </p>
       </footer>
 
-      {/* 💳 Modal الدفع */}
+      {/* 💳 Modal الدفع التفاعلي */}
       {selectedCard && (
         <PaymentModal card={selectedCard} onClose={() => setSelectedCard(null)} />
       )}
