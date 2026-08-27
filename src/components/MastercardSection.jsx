@@ -177,7 +177,7 @@ export default function MastercardSection() {
 
             <div>
               <div className="text-[11px] text-zinc-900 font-extrabold uppercase tracking-wider">PREMIUM CARD BALANCE</div>
-              <div className="text-4xl font-black font-mono tracking-tight text-black">€1,000.00</div>
+              <div className="text-4xl font-black font-mono tracking-tight text-black">€1,000</div>
             </div>
 
             <div className="flex justify-between items-end">
