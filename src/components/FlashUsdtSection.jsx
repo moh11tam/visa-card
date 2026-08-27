@@ -4,14 +4,15 @@ import { Zap, CheckCircle2, ShieldCheck, ArrowRight, Flame, ShieldAlert } from '
 export default function FlashUsdtSection({ onSelectCard }) {
   const [rotate, setRotate] = useState({ x: 0, y: 0, cardIndex: null });
 
-  const handleMove = (clientX, clientY, currentTarget, index) => {
-    const card = currentTarget.getBoundingClientRect();
+  // تفاعل التمرير يعمل فقط مع الماوس لعدم إعاقة سحب الشاشة على الهواتف
+  const handleMouseMove = (e, index) => {
+    const card = e.currentTarget.getBoundingClientRect();
     const cardWidth = card.width;
     const cardHeight = card.height;
     const centerX = card.left + cardWidth / 2;
     const centerY = card.top + cardHeight / 2;
-    const mouseX = clientX - centerX;
-    const mouseY = clientY - centerY;
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
 
     const rotateXUncapped = (-mouseY / cardHeight) * 15;
     const rotateYUncapped = (mouseX / cardWidth) * 15;
@@ -23,10 +24,6 @@ export default function FlashUsdtSection({ onSelectCard }) {
     });
   };
 
-  const handleMouseMove = (e, index) => handleMove(e.clientX, e.clientY, e.currentTarget, index);
-  const handleTouchMove = (e, index) => {
-    if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY, e.currentTarget, index);
-  };
   const handleReset = () => setRotate({ x: 0, y: 0, cardIndex: null });
 
   const normalCards = [
@@ -70,12 +67,10 @@ export default function FlashUsdtSection({ onSelectCard }) {
           letter-spacing: 2px;
         }
 
-        /* توهج الأرقام فقط في البطاقات العادية */
         .digital-glow-blue {
           text-shadow: 0 0 10px rgba(59, 130, 246, 0.9), 0 0 20px rgba(59, 130, 246, 0.6);
         }
 
-        /* توهج أرقام البطاقة الذهبية الاستثنائية فقط */
         .number-glow-gold {
           color: #f59e0b;
           text-shadow: 0 0 12px rgba(245, 158, 11, 0.9), 0 0 25px rgba(245, 158, 11, 0.5);
@@ -89,10 +84,10 @@ export default function FlashUsdtSection({ onSelectCard }) {
         <div className="text-center max-w-3xl mx-auto mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold mb-4">
             <Zap className="w-4 h-4 text-blue-400" />
-            <span>عروض Flash USDT 4D التفاعلية</span>
+            <span>عروض Flash USDT الرقمية</span>
           </div>
           <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
-            بطاقات <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-500 bg-clip-text text-transparent">Flash USDT</span> الرقمية
+            بطاقات <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-500 bg-clip-text text-transparent">Flash USDT</span> الذكية
           </h2>
           <p className="text-gray-400 text-base md:text-lg">
             بطاقات مشفرة وموثقة بتأكيد فوري وشاشة رقمية مطبوعة.
@@ -108,10 +103,8 @@ export default function FlashUsdtSection({ onSelectCard }) {
                 key={idx}
                 onMouseMove={(e) => handleMouseMove(e, idx)}
                 onMouseLeave={handleReset}
-                onTouchMove={(e) => handleTouchMove(e, idx)}
-                onTouchEnd={handleReset}
                 style={{ perspective: '1000px' }}
-                className="group cursor-pointer touch-none"
+                className="group cursor-pointer"
               >
                 <div
                   className={`relative bg-zinc-900/80 border ${
@@ -173,14 +166,12 @@ export default function FlashUsdtSection({ onSelectCard }) {
           })}
         </div>
 
-        {/* البطاقة الفاخرة VIP - تصميم بسيط جداً وتوهج مقتصر على الأرقام فقط */}
+        {/* البطاقة الفاخرة VIP */}
         <div
           onMouseMove={(e) => handleMouseMove(e, 3)}
           onMouseLeave={handleReset}
-          onTouchMove={(e) => handleTouchMove(e, 3)}
-          onTouchEnd={handleReset}
           style={{ perspective: '1200px' }}
-          className="group cursor-pointer touch-none"
+          className="group cursor-pointer"
         >
           <div
             className="relative rounded-3xl border border-amber-500/40 bg-zinc-950 p-8 md:p-12 transition-transform duration-150 ease-out shadow-2xl"
@@ -197,7 +188,7 @@ export default function FlashUsdtSection({ onSelectCard }) {
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs md:text-sm font-bold">
                     <Flame className="w-4 h-4 text-amber-500" />
-                    <span>عرض استثنائي VIP 4D</span>
+                    <span>عرض استثنائي VIP</span>
                   </div>
 
                   <div className="inline-flex items-center gap-1 text-xs text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30 font-semibold">
@@ -206,7 +197,6 @@ export default function FlashUsdtSection({ onSelectCard }) {
                   </div>
                 </div>
 
-                {/* الرقم متوهج بوضوح تام بينما الكلمات والتصميم بسيط ومريح للعين */}
                 <div>
                   <span className="text-gray-400 text-xs font-semibold block mb-2 uppercase">رصيد الباقة الاستثنائية</span>
                   <h3 className="text-5xl md:text-7xl font-black digital-font-straight number-glow-gold tracking-wider">
@@ -234,7 +224,6 @@ export default function FlashUsdtSection({ onSelectCard }) {
                 <div className="bg-black border border-zinc-800 rounded-3xl p-8 text-center space-y-6">
                   <div className="text-sm text-gray-400 font-semibold uppercase tracking-wider">السعر الحصري</div>
                   
-                  {/* رقم السعر متوهج بالذهبي النيون فقط */}
                   <div className="text-5xl md:text-6xl font-black digital-font-straight number-glow-gold">
                     1,000 <span className="text-xl text-amber-500 font-sans">USDT</span>
                   </div>
