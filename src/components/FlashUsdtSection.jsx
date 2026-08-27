@@ -90,7 +90,7 @@ export default function FlashUsdtSection({ onSelectCard }) {
             بطاقات <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-500 bg-clip-text text-transparent">Flash USDT</span> الذكية
           </h2>
           <p className="text-gray-400 text-base md:text-lg">
-            بطاقات مشفرة وموثقة بتأكيد فوري وشاشة رقمية مطبوعة.
+                بطاقات مشفرة وموثقة بتأكيد فوري...
           </p>
         </div>
 
