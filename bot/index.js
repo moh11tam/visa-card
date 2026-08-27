@@ -1,7 +1,17 @@
 require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
+const http = require('http');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// 🌐 خادم HTTP مصغر لإبقاء منصة Render مستقرة ومستجيبة (Port Binding)
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('VIRTUAL VISA Bot is live and running 24/7!');
+}).listen(PORT, () => {
+  console.log(`📡 HTTP Server running on port ${PORT}`);
+});
 
 // 🔗 رابط المتجر الرئيسي
 const WEBSITE_URL = 'https://visa-card-topaz.vercel.app'; 
@@ -34,7 +44,7 @@ const mainKeyboard = Markup.inlineKeyboard([
 bot.start((ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
 bot.hears([/hello/i, /hi/i, /هلا/i, /مرحبا/i, /السلام عليكم/i, /ستارت/i, /start/i], (ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
 
-// ⚡ 1. قسم Flash USDT (جديد ومفصل)
+// ⚡ 1. قسم Flash USDT
 bot.action('FLASH_USDT', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `⚡ *عروض Flash USDT الاستثنائية:*
@@ -189,7 +199,7 @@ bot.action('MAIN_MENU', async (ctx) => {
   });
 });
 
-// تشغيل البوت
+// 🚀 تشغيل البوت
 bot.launch().then(() => console.log('🚀 بوت VIRTUAL VISA يعمل بنجاح!'));
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
