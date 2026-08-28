@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tv, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, Film } from 'lucide-react';
-import PaymentModal from './PaymentModal';
 
-export default function NetflixSection() {
-  const [selectedCard, setSelectedCard] = useState(null);
+export default function NetflixSection({ onSelectCard }) {
 
   const netflixCards = [
     {
@@ -11,6 +9,7 @@ export default function NetflixSection() {
       title: "اشتراك Netflix شهري",
       subtitle: "حساب خاص / شاشة واحدة",
       duration: "شهر واحد",
+      balance: "5$", // تخصيص القيمة للتخلص من المبلغ الافتراضي في المودال
       priceUsdt: "5",
       price: "5",
       badge: "الأكثر طلباً",
@@ -27,6 +26,7 @@ export default function NetflixSection() {
       title: "اشتراك Netflix ربع سنوي",
       subtitle: "حساب كامل خَاص 4 شاشات",
       duration: "3 أشهر",
+      balance: "12$",
       priceUsdt: "12",
       price: "12",
       badge: "توفير ممتاز",
@@ -43,6 +43,7 @@ export default function NetflixSection() {
       title: "اشتراك Netflix سنوي",
       subtitle: "باقة VIP للمجموعات والعائلات",
       duration: "12 شهرًا",
+      balance: "40$",
       priceUsdt: "40",
       price: "40",
       badge: "الباقة الكبرى",
@@ -58,12 +59,10 @@ export default function NetflixSection() {
 
   return (
     <section id="netflix" className="py-20 bg-black text-white relative overflow-hidden select-none">
-      {/* خلفية التوهج الأحمر الخاص بنيتفليكس */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/10 blur-[160px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* رأس القسم */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-sm font-semibold mb-4">
             <Film className="w-4 h-4 text-red-500" />
@@ -77,7 +76,6 @@ export default function NetflixSection() {
           </p>
         </div>
 
-        {/* شبكة بطاقات نيتفليكس */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {netflixCards.map((card) => (
             <div
@@ -85,7 +83,6 @@ export default function NetflixSection() {
               className={`relative bg-zinc-900/80 border ${card.glow} rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl flex flex-col justify-between group shadow-xl`}
             >
               <div>
-                {/* رأس البطاقة والشارة */}
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400">
                     {card.badge}
@@ -95,13 +92,11 @@ export default function NetflixSection() {
                   </div>
                 </div>
 
-                {/* التفاصيل والعنوان */}
                 <div className="mb-6">
                   <h3 className="text-2xl font-black text-white mb-1">{card.title}</h3>
                   <p className="text-xs text-zinc-400">{card.subtitle}</p>
                 </div>
 
-                {/* السعر والمدة */}
                 <div className="my-6 p-4 rounded-2xl bg-black/60 border border-zinc-800 flex items-baseline justify-between">
                   <span className="text-zinc-400 text-xs font-semibold uppercase">المدة: {card.duration}</span>
                   <div className="text-3xl font-black text-emerald-400">
@@ -109,7 +104,6 @@ export default function NetflixSection() {
                   </div>
                 </div>
 
-                {/* قائمة المزايا */}
                 <ul className="space-y-3 mb-8">
                   {card.features.map((feat, i) => (
                     <li key={i} className="flex items-center gap-3 text-xs md:text-sm text-zinc-300">
@@ -120,9 +114,9 @@ export default function NetflixSection() {
                 </ul>
               </div>
 
-              {/* زر الشراء */}
+              {/* استدعاء onSelectCard المُمررة من App.jsx */}
               <button
-                onClick={() => setSelectedCard(card)}
+                onClick={() => onSelectCard && onSelectCard(card)}
                 className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-red-600/20"
               >
                 <span>شراء الآن</span>
@@ -132,7 +126,6 @@ export default function NetflixSection() {
           ))}
         </div>
 
-        {/* شريط الضمان والتنفيذ الفوري */}
         <div className="mt-12 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800 flex flex-wrap items-center justify-around gap-4 text-xs text-zinc-400">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-red-500" />
@@ -145,11 +138,6 @@ export default function NetflixSection() {
         </div>
 
       </div>
-
-      {/* النافذة المنبثقة لإتمام عملية الدفع */}
-      {selectedCard && (
-        <PaymentModal card={selectedCard} onClose={() => setSelectedCard(null)} />
-      )}
     </section>
   );
 }
