@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import VisaCard3D from './VisaCard3D';
 import Typewriter from './Typewriter';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Trophy, LogIn, ArrowLeft, Sparkles } from 'lucide-react';
 
-export default function Hero() {
+export default function Hero({ onLoginClick }) {
   // شبكة الأيقونات والخدمات التفاعلية
   const platforms = [
     { name: 'TikTok', desc: 'Coins & Gifts', icon: '🎵', color: 'hover:border-pink-500/60 hover:shadow-pink-500/20' },
@@ -14,6 +14,24 @@ export default function Hero() {
     { name: 'Steam', desc: 'Gaming', icon: '⚙️', color: 'hover:border-cyan-500/60 hover:shadow-cyan-500/20' },
     { name: 'Roblox', desc: 'Robux', icon: '🟥', color: 'hover:border-red-500/60 hover:shadow-red-500/20' },
   ];
+
+  // النص الكامل للإعلان الترويجي
+  const promoText = "ساهم في توسيع مجتمعنا! انسخ رابط الإحالة الخاص بك وشاركه مع أصدقائك. عند انضمام 10 أشخاص عن طريق رابطك، ستصلك بطاقة Virtual Visa شحن مجاني بقيمة 50$ 💵 فوراً على بريدك الإلكتروني!";
+  
+  const [displayedPromoText, setDisplayedPromoText] = useState('');
+  const [promoIndex, setPromoIndex] = useState(0);
+
+  // تأثير الطباعة التدريجية (Typewriter) للنص الترويجي
+  useEffect(() => {
+    if (promoIndex < promoText.length) {
+      const timer = setTimeout(() => {
+        setDisplayedPromoText((prev) => prev + promoText[promoIndex]);
+        setPromoIndex((prev) => prev + 1);
+      }, 30);
+
+      return () => clearTimeout(timer);
+    }
+  }, [promoIndex, promoText]);
 
   return (
     <section id="hero" className="max-w-7xl mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center justify-between gap-12">
@@ -29,7 +47,7 @@ export default function Hero() {
           <Typewriter text="عالمك الرقمي، في مكان واحد" speed={90} />
         </h1>
 
-        {/* الوصف الجديد */}
+        {/* الوصف */}
         <p className="text-zinc-400 text-base md:text-lg max-w-xl mx-auto md:mx-0 leading-relaxed">
           بطاقات ورصيد رقمي لخدماتك ومنصاتك المفضلة، بأسعار تنافسية وطرق دفع مرنة.
         </p>
@@ -54,8 +72,55 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* 🎁 بطاقة الإعلان الترويجية الثابتة بخلفية ذهبية خفيفة وتأثير كتابة بطيء */}
+        <div className="my-4 max-w-xl mx-auto md:mx-0 text-right">
+          <div className="relative rounded-2xl bg-gradient-to-r from-amber-950/80 via-zinc-900 to-amber-950/80 border border-amber-500/40 p-5 shadow-2xl backdrop-blur-xl overflow-hidden">
+            
+            {/* توهج خلفي دافئ */}
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-yellow-500/10 to-amber-500/10 animate-pulse pointer-events-none" />
+
+            <div className="relative z-10 space-y-3">
+              
+              {/* شارة الإعلان والعنوان */}
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-black">
+                  <Trophy className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
+                  <span>عرض خاص 💵</span>
+                </span>
+                <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+              </div>
+
+              <h3 className="text-sm sm:text-base font-black text-amber-300">
+                🎁 شارك واكسب – بطاقتك الافتراضية بقيمة 50$ بانتظارك!
+              </h3>
+
+              {/* النص المكتوب بالعرض البطيء */}
+              <p className="text-xs sm:text-sm text-zinc-200 font-normal leading-relaxed min-h-[3.5rem]">
+                {displayedPromoText}
+                {promoIndex < promoText.length && (
+                  <span className="inline-block w-1.5 h-3.5 mr-0.5 bg-amber-400 animate-pulse" />
+                )}
+              </p>
+
+              {/* 🔵 زر تسجيل الدخول الأزرق داخل البطاقة */}
+              <div className="pt-1">
+                <button
+                  onClick={onLoginClick}
+                  className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95 border border-blue-400/40 overflow-hidden cursor-pointer"
+                >
+                  <span className="absolute top-0 right-0 w-8 h-full bg-white/30 skew-x-12 -translate-x-20 group-hover:translate-x-32 transition-transform duration-700 ease-in-out" />
+                  <LogIn className="w-3.5 h-3.5 text-white" />
+                  <span>تسجيل الدخول للاشتراك</span>
+                  <ArrowLeft className="w-3.5 h-3.5 text-white group-hover:-translate-x-1 transition-transform" />
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
         {/* أزرار العمليات الأصلية */}
-        <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+        <div className="flex flex-col sm:flex-row gap-4 pt-2 justify-center md:justify-start">
           <a href="#cards" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-95">
             <ShoppingBag className="w-5 h-5" /> استعرض البطاقات
           </a>
