@@ -5,6 +5,7 @@ import Features from './components/Features';
 import CardsSection from './components/CardsSection';
 import MastercardSection from './components/MastercardSection';
 import FlashUsdtSection from './components/FlashUsdtSection';
+import NetflixSection from './components/NetflixSection';
 import HowItWorks from './components/HowItWorks';
 import Faq from './components/Faq';
 import PaymentModal from './components/PaymentModal';
@@ -35,6 +36,7 @@ export default function App() {
       <CardsSection onSelectCard={handleSelectCard} />
       <MastercardSection onSelectCard={handleSelectCard} />
       <FlashUsdtSection onSelectCard={handleSelectCard} />
+      <NetflixSection onSelectCard={handleSelectCard} />
 
       <HowItWorks />
       <Faq />
