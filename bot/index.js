@@ -4,7 +4,7 @@ const http = require('http');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// 🌐 خادم HTTP مصغر لإبقاء منصة Render مستقرة ومستجيبة (Port Binding)
+// 🌐 خادم HTTP مصغر لإبقاء منصة Render مستقرة ومستجيبة
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -16,24 +16,25 @@ http.createServer((req, res) => {
 // 🔗 رابط المتجر الرئيسي
 const WEBSITE_URL = 'https://visa-card-topaz.vercel.app'; 
 
-// 📩 نص الرسالة الترحيبية والترويجية الرئيسية
+// 📩 الرسالة الترحيبية المحدثة
 const WELCOME_TEXT = 
-`🚀 *مرحبًا بك في منصة VIRTUAL VISA الرقمية* 💳
+`✨ *مرحبًا بك في بوابة VIRTUAL VISA الرقمية* 💳
 
-وجهتك الأولى والأسرع للحصول على البطاقات الافتراضية وعروض *Flash USDT* الحصرية بأسعار استثنائية!
+عالمك الأول للحلول المالية والاشتراكات الترفيهية الفائقة! نتيح لك الوصول الفوري لأحدث الخدمات الرقمية بأسعار تنافسية وضمان كامل.
 
-🔥 *أبرز خدماتنا وعروضنا الحصرية:*
-⚡ *عروض Flash USDT:* تحويلات سريعة وتخفيضات هائلة على أرصدة USDT.
-💳 *بطاقات Visa & Mastercard:* مشحونة بالدولار ($) واليورو (€) للشراء والاشتراكات.
-🪙 *شحن TikTok Coins:* أرصدة وباقات شحن بأسعار تنافسية.
-👑 *باقات VIP الذهبية:* رصيد كبير بتكلفة مخفضة مجنونة!
-🚀 *تسليم فوري ومباشر:* معالجة آمنة وسريعة لجميع طلباتك.
+🔥 *أبرز العروض الحصرية المتاحة:*
+🎁 *برنامج الإحالات:* ادعُ أصدقاءك واكسب بطاقة Visa بقيمة **50$** مجانًا!
+🍿 *اشتراكات Netflix:* حسابات بريميوم 4K Ultra HD بأسعار مخفضة.
+⚡ *عروض Flash USDT:* تحويلات سريعة بخصومات هائلة تصل إلى 80%.
+💳 *بطاقات Visa & Mastercard:* للتدفع والتفعيل في جميع المواقع العالمية.
+🪙 *TikTok Coins:* باقات شحن وتوفير استثنائي للعملات.
 
-اختر الخدمة أو التفاصيل التي تريد استكشافها من الأزرار أدناه 👇`;
+اختر قسمك المفصل من الأزرار التفاعلية أدناه 👇`;
 
-// 🔘 لوحة الأزرار الرئيسية
+// 🔘 لوحة الأزرار الرئيسية المحدثة
 const mainKeyboard = Markup.inlineKeyboard([
-  [Markup.button.url('🌐 زيارة الموقع الرسمي', WEBSITE_URL)],
+  [Markup.button.url('🌐 زيارة المنصة الرسمية', WEBSITE_URL)],
+  [Markup.button.callback('🎁 برنامج الإحالات والربح', 'REFERRAL_PROGRAM'), Markup.button.callback('🍿 اشتراكات Netflix 4K', 'NETFLIX')],
   [Markup.button.callback('⚡ عروض Flash USDT', 'FLASH_USDT'), Markup.button.callback('💳 البطاقات الرقمية', 'CARDS')],
   [Markup.button.callback('🪙 TikTok & الخدمات', 'SERVICES'), Markup.button.callback('💰 طرق الدفع', 'PAYMENT')],
   [Markup.button.callback('📦 كيفية الاستلام والعمل', 'HOW_IT_WORKS'), Markup.button.callback('📋 التفاصيل والضمان', 'DETAILS')],
@@ -44,7 +45,56 @@ const mainKeyboard = Markup.inlineKeyboard([
 bot.start((ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
 bot.hears([/hello/i, /hi/i, /هلا/i, /مرحبا/i, /السلام عليكم/i, /ستارت/i, /start/i], (ctx) => ctx.replyWithMarkdown(WELCOME_TEXT, mainKeyboard));
 
-// ⚡ 1. قسم Flash USDT
+// 🎁 1. قسم برنامج الإحالات
+bot.action('REFERRAL_PROGRAM', async (ctx) => {
+  await ctx.answerCbQuery();
+  const text = `🎁 *برنامج الإحالات والمكافآت (Referral Program)*
+
+شارِك المنصة مع أصدقائك واكسب رصيداً مجانياً بسهولة!
+
+💵 *كيفية الربح:*
+1️⃣ أدخل بريدك الإلكتروني داخل المنصة للحصول على **رابط الإحالة الخاص بك**.
+2️⃣ شارك الرابط مع أصدقائك ومعارفك عبر وسائل التواصل الاجتماعي.
+3️⃣ عند انضمام **10 أشخاص** عبر رابطك، ستحصل تلقائياً على **بطاقة Virtual Visa بقيمة 50$**!
+
+⚡ *تتبع إحالاتك ورصيدك مباشرة عبر حسابك على الموقع.*`;
+
+  ctx.editMessageText(text, {
+    parse_mode: 'Markdown',
+    ...Markup.inlineKeyboard([
+      [Markup.button.url('🚀 احصل على رابط إحالتك الآن', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
+    ])
+  });
+});
+
+// 🍿 2. قسم Netflix
+bot.action('NETFLIX', async (ctx) => {
+  await ctx.answerCbQuery();
+  const text = `🍿 *باقات اشتراكات Netflix Premium 4K*
+
+استمتع بمشاهدة أفلامك ومسلسلاتك المفضلة بأعلى جودة **4K Ultra HD** وبدون إعلانات!
+
+🔥 *الباقات المتوفرة:*
+• **شاشة خاصة (1 Profile):** اشتراك شهر كامل لجهاز واحد مع كلمة سر خاصة بك.
+• **حساب كامل (Full Account - 4 Screens):** اشتراك شهر كامل تحكم كامل بالحساب.
+• **اشتراكات طويلة المدى (3 و 6 أشهر):** توفير إضافي مع ضمان كامل طوال فترة الاشتراك.
+
+✨ *المميزات:*
+• ضمان عدم الانقطاع (Full Warranty).
+• جودة Ultra HD / HDR مع دعم اللغة العربية.
+• تسليم وتسليم فوري فور إتمام الدفع.`;
+
+  ctx.editMessageText(text, {
+    parse_mode: 'Markdown',
+    ...Markup.inlineKeyboard([
+      [Markup.button.url('🎬 اشترك في Netflix الآن', WEBSITE_URL)],
+      [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
+    ])
+  });
+});
+
+// ⚡ 3. قسم Flash USDT
 bot.action('FLASH_USDT', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `⚡ *عروض Flash USDT الاستثنائية:*
@@ -54,9 +104,7 @@ bot.action('FLASH_USDT', async (ctx) => {
 🔥 *المميزات والخصائص:*
 • **أسعار تنافسية:** كميات مرتفعة بخصومات تصل حتى 80%.
 • **شبكات متعددة:** دعم كامل لشبكات Tron (TRC20) وBNB Smart Chain (BEP20).
-• **استلام سريع:** إرسال فوري إلى عنوان محفظتك بعد التأكيد.
-
-💡 *مثالي للاستخدام السريع، شحن الحسابات، والخدمات الرقمية المختلفة.*`;
+• **استلام سريع:** إرسال فوري إلى عنوان محفظتك بعد التأكيد.`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
@@ -67,7 +115,7 @@ bot.action('FLASH_USDT', async (ctx) => {
   });
 });
 
-// 💳 2. البطاقات المتوفرة
+// 💳 4. البطاقات المتوفرة
 bot.action('CARDS', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `💳 *البطاقات الافتراضية المتوفرة:*
@@ -89,7 +137,7 @@ bot.action('CARDS', async (ctx) => {
   });
 });
 
-// 🪙 3. الخدمات الرقمية و TikTok
+// 🪙 5. الخدمات الرقمية و TikTok
 bot.action('SERVICES', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `🪙 *الخدمات الرقمية وشحن Coins:*
@@ -109,7 +157,7 @@ bot.action('SERVICES', async (ctx) => {
   });
 });
 
-// 💰 4. طرق الدفع
+// 💰 6. طرق الدفع
 bot.action('PAYMENT', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `💰 *طرق الدفع المتاحة:*
@@ -132,12 +180,12 @@ bot.action('PAYMENT', async (ctx) => {
   });
 });
 
-// 📦 5. كيفية استلام الطلب
+// 📦 7. كيفية استلام الطلب
 bot.action('HOW_IT_WORKS', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `📦 *خطوات الطلب والاستلام:*
 
-1️⃣ **الخيار:** حدد البطاقة أو عرض Flash USDT المطلوب من الموقع.
+1️⃣ **الخيار:** حدد الخدمة أو البطاقة المطلوب شراءها من الموقع.
 2️⃣ **البيانات:** أدخل بريدك الإلكتروني وعنوان محفظتك (في حال طلب Flash USDT).
 3️⃣ **الدفع:** حوّل المبلغ المطلوب بـ USDT وأرفق رمز المعاملة (TXID) ولقطة الشاشة.
 4️⃣ **التسليم:** يتم التحقق واستلام تفاصيل طلبك مباشرة على بريدك الإلكتروني!`;
@@ -151,27 +199,27 @@ bot.action('HOW_IT_WORKS', async (ctx) => {
   });
 });
 
-// 📋 6. معرفة التفاصيل
+// 📋 8. معرفة التفاصيل والضمان
 bot.action('DETAILS', async (ctx) => {
   await ctx.answerCbQuery();
-  const text = `📋 *حول متجر VIRTUAL VISA:*
+  const text = `📋 *حول منصة VIRTUAL VISA:*
 
-نحن منصة متخصصة في تقديم حلول الدفع الرقمي والبطاقات الافتراضية.
+نحن منصة متخصصة في تقديم حلول الدفع الرقمي، البطاقات الافتراضية، واشتراكات الترفيه الممتازة.
 
-✔️ بطاقات مقبولة في مختلف المتواجر والخدمات.
-✔️ ضمان كامل لجميع المنتجات والأرصدة.
-✔️ سرعة في التنفيذ ودعم فني متواصل.`;
+✔️ بطاقات واشتراكات مقبولة وضمان كامل طوال مدة الخدمة.
+✔️ سرعة تنفيذ عالية ومعالجة آمنة للبيانات.
+✔️ دعم فني متواصل للرد على الاستفسارات.`;
 
   ctx.editMessageText(text, {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard([
-      [Markup.button.url('🌐 تصفح الموقع', WEBSITE_URL)],
+      [Markup.button.url('🌐 تصفح المنصة', WEBSITE_URL)],
       [Markup.button.callback('⬅️ القائمة الرئيسية', 'MAIN_MENU')]
     ])
   });
 });
 
-// 🎧 7. الدعم والمساعدة
+// 🎧 9. الدعم والمساعدة
 bot.action('SUPPORT', async (ctx) => {
   await ctx.answerCbQuery();
   const text = `🎧 *مركز الدعم الفني:*

@@ -72,50 +72,38 @@ export default function Hero({ onLoginClick }) {
           </div>
         </div>
 
-        {/* 🎁 بطاقة الإعلان الترويجية الثابتة بخلفية ذهبية خفيفة وتأثير كتابة بطيء */}
-        <div className="my-4 max-w-xl mx-auto md:mx-0 text-right">
-          <div className="relative rounded-2xl bg-gradient-to-r from-amber-950/80 via-zinc-900 to-amber-950/80 border border-amber-500/40 p-5 shadow-2xl backdrop-blur-xl overflow-hidden">
-            
-            {/* توهج خلفي دافئ */}
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-yellow-500/10 to-amber-500/10 animate-pulse pointer-events-none" />
+        {/* 🎁 محتوى الإعلان الترويجي (مستخرج بدون إطار البطاقة) */}
+        <div className="my-4 max-w-xl mx-auto md:mx-0 text-right space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <span>عرض خاص 💵</span>
+            </span>
+            <Sparkles className="w-4 h-4 text-amber-400" />
+          </div>
 
-            <div className="relative z-10 space-y-3">
-              
-              {/* شارة الإعلان والعنوان */}
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-black">
-                  <Trophy className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
-                  <span>عرض خاص 💵</span>
-                </span>
-                <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-              </div>
+          <h3 className="text-base sm:text-lg font-bold text-amber-300">
+            🎁 شارك واكسب – بطاقتك الافتراضية بقيمة 50$ بانتظارك!
+          </h3>
 
-              <h3 className="text-sm sm:text-base font-black text-amber-300">
-                🎁 شارك واكسب – بطاقتك الافتراضية بقيمة 50$ بانتظارك!
-              </h3>
+          {/* النص المكتوب بالعرض البطيء */}
+          <p className="text-xs sm:text-sm text-zinc-300 font-normal leading-relaxed min-h-[3.5rem]">
+            {displayedPromoText}
+            {promoIndex < promoText.length && (
+              <span className="inline-block w-1.5 h-3.5 mr-0.5 bg-amber-400 animate-pulse" />
+            )}
+          </p>
 
-              {/* النص المكتوب بالعرض البطيء */}
-              <p className="text-xs sm:text-sm text-zinc-200 font-normal leading-relaxed min-h-[3.5rem]">
-                {displayedPromoText}
-                {promoIndex < promoText.length && (
-                  <span className="inline-block w-1.5 h-3.5 mr-0.5 bg-amber-400 animate-pulse" />
-                )}
-              </p>
-
-              {/* 🔵 زر تسجيل الدخول الأزرق داخل البطاقة */}
-              <div className="pt-1">
-                <button
-                  onClick={onLoginClick}
-                  className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95 border border-blue-400/40 overflow-hidden cursor-pointer"
-                >
-                  <span className="absolute top-0 right-0 w-8 h-full bg-white/30 skew-x-12 -translate-x-20 group-hover:translate-x-32 transition-transform duration-700 ease-in-out" />
-                  <LogIn className="w-3.5 h-3.5 text-white" />
-                  <span>تسجيل الدخول للاشتراك</span>
-                  <ArrowLeft className="w-3.5 h-3.5 text-white group-hover:-translate-x-1 transition-transform" />
-                </button>
-              </div>
-
-            </div>
+          {/* 🔵 زر تسجيل الدخول العادي بدون توهج */}
+          <div className="pt-1">
+            <button
+              onClick={onLoginClick}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors cursor-pointer"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>تسجيل الدخول للاشتراك</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 
