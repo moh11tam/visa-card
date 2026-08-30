@@ -10,7 +10,7 @@ export default function CardsSection() {
   const cardsData = [
     { title: "Mastercard Virtual", balance: "10", priceUsdt: "6 USDT", currency: "€" },
     { title: "Visa Virtual", balance: "25", priceUsdt: "10 USDT", currency: "$" },
-    { title: "Flash USDT", balance: "500", priceUsdt: "25 USDT", currency: "USDT", type: "flash" },
+    { title: "Flash USDT", balance: "50", priceUsdt: "25 USDT", currency: "USDT", type: "flash" },
     { title: "Visa Virtual", balance: "100", priceUsdt: "50 USDT", currency: "$" },
   ];
 
