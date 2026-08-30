@@ -30,7 +30,7 @@ export default function FlashUsdtSection() {
 
   const handleReset = () => setRotate({ x: 0, y: 0, cardIndex: null });
 
-  // 2. تحديث هيكلية البيانات لتبدو واضحة داخل PaymentModal
+  // 2. هيكلية البيانات
   const normalCards = [
     {
       id: 'flash_10k',
@@ -71,7 +71,7 @@ export default function FlashUsdtSection() {
   };
 
   return (
-    <section id="flash-usdt" className="py-24 bg-black text-white relative overflow-hidden select-none">
+    <section id="flash-usdt-section" className="py-24 bg-black text-white relative overflow-hidden select-none scroll-mt-6">
       {/* خلفية التوهج العام */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -150,7 +150,7 @@ export default function FlashUsdtSection() {
                   <button
                     onClick={() => setSelectedCard(card)}
                     style={{ transform: isHovered ? 'translateZ(30px)' : 'translateZ(0px)' }}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                   >
                     <span>شراء الآن</span>
                     <ArrowRight className="w-4 h-4 rotate-180" />
@@ -225,7 +225,7 @@ export default function FlashUsdtSection() {
 
                   <button 
                     onClick={() => setSelectedCard(vipCard)}
-                    className="w-full py-4 px-8 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black text-lg text-center transition-all duration-300 flex items-center justify-center gap-3 active:scale-95"
+                    className="w-full py-4 px-8 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black text-lg text-center transition-all duration-300 flex items-center justify-center gap-3 active:scale-95 cursor-pointer"
                   >
                     <span>اطلب العرض الاستثنائي</span>
                     <ArrowRight className="w-5 h-5 rotate-180" />

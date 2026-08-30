@@ -6,15 +6,15 @@ import { Star, Sparkles } from 'lucide-react';
 export default function CardsSection() {
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // هنا يمكنك إضافة أو تعديل أي بطاقة بتحديد الاسم، الرصيد، السعر، والعملة
   const cardsData = [
-    { title: "Mastercard Virtual", balance: "10", priceUsdt: "6 USDT", currency: "€" },
-    { title: "Visa Virtual", balance: "25", priceUsdt: "10 USDT", currency: "$" },
-    { title: "Flash USDT", balance: "50", priceUsdt: "25 USDT", currency: "USDT", type: "flash" },
-    { title: "Visa Virtual", balance: "100", priceUsdt: "50 USDT", currency: "$" },
+    { id: 'mc-10', title: "Mastercard Virtual", balance: "10", priceUsdt: "6 USDT", currency: "€" },
+    { id: 'visa-25', title: "Visa Virtual", balance: "25", priceUsdt: "10 USDT", currency: "$" },
+    { id: 'flash-50', title: "Flash USDT", balance: "50", priceUsdt: "25 USDT", currency: "USDT", type: "flash" },
+    { id: 'visa-100', title: "Visa Virtual", balance: "100", priceUsdt: "50 USDT", currency: "$" },
   ];
 
   const vipCardData = {
+    id: 'vip-1000',
     title: "Visa VIP Elite",
     balance: "1,000",
     priceUsdt: "100 USDT",
@@ -23,29 +23,34 @@ export default function CardsSection() {
   };
 
   return (
-    <section id="cards" className="max-w-7xl mx-auto px-6 py-20">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-white">اختر البطاقة المناسبة لك</h2>
-        <p className="text-zinc-400 mt-2">جميع البطاقات جاهزة للتسليم الفوري</p>
+    <section id="cards" className="max-w-7xl mx-auto px-6 py-20 select-none">
+      {/* العنوان الرئيسي */}
+      <div className="text-center mb-12 space-y-2">
+        <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">اختر البطاقة المناسبة لك</h2>
+        <p className="text-zinc-400 text-sm md:text-base">جميع البطاقات جاهزة للتسليم الفوري</p>
       </div>
 
       {/* البطاقات الأربعة الرئيسية */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-        {cardsData.map((card, idx) => (
-          <div key={idx} className="bg-zinc-900/60 p-5 rounded-2xl border border-zinc-800 hover:border-blue-500/50 transition flex flex-col justify-between items-center text-center">
-            <div className="w-full mb-4">
+        {cardsData.map((card) => (
+          <div 
+            key={card.id} 
+            className="bg-zinc-900/60 p-5 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 transition duration-300 flex flex-col justify-between items-center text-center shadow-lg hover:shadow-blue-500/10 group"
+          >
+            <div className="w-full mb-4 transform group-hover:scale-105 transition duration-300">
               <VisaCard3D amount={card.balance} />
             </div>
             
             <div className="w-full mt-2">
-              <h4 className="text-white font-bold text-sm mb-1">{card.title}</h4>
-              <div className="bg-blue-950/60 border border-blue-500/30 py-2 px-4 rounded-xl mb-4 text-xs text-zinc-300">
-                <div>سعر الشراء: <span className="text-emerald-400 font-bold">{card.priceUsdt}</span></div>
+              <h4 className="text-white font-bold text-sm mb-2">{card.title}</h4>
+              <div className="bg-blue-950/40 border border-blue-500/20 py-2 px-4 rounded-xl mb-4 text-xs text-zinc-300">
+                <span>سعر الشراء: </span>
+                <span className="text-emerald-400 font-bold">{card.priceUsdt}</span>
               </div>
               
               <button
                 onClick={() => setSelectedCard(card)}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-blue-600/20"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-blue-600/20 text-sm active:scale-95"
               >
                 شراء الآن
               </button>
@@ -59,9 +64,9 @@ export default function CardsSection() {
         
         {/* شريط النص المتحرك الاحترافي */}
         <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-yellow-600 via-amber-500 to-yellow-600 text-black py-1.5 font-extrabold text-xs tracking-widest overflow-hidden whitespace-nowrap shadow-md">
-          <div className="inline-block animate-marquee">
-            <span>🔥 عرض استثنائي • كميات محدودة • قيمة أكبر • حضور أقوى • تجربة دفع رقمية بمستوى مختلف • </span>
-            <span>🔥 عرض استثنائي • كميات محدودة • قيمة أكبر • حضور أقوى • تجربة دفع رقمية بمستوى مختلف • </span>
+          <div className="inline-block animate-[marquee_25s_linear_infinite]">
+            <span className="mx-2">🔥 عرض استثنائي • كميات محدودة • قيمة أكبر • حضور أقوى • تجربة دفع رقمية بمستوى مختلف • </span>
+            <span className="mx-2">🔥 عرض استثنائي • كميات محدودة • قيمة أكبر • حضور أقوى • تجربة دفع رقمية بمستوى مختلف • </span>
           </div>
         </div>
 
@@ -85,11 +90,11 @@ export default function CardsSection() {
                 <span>القيمة الاسمية:</span>
                 <span className="font-bold text-white">$1,000 USD</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-t border-zinc-800/80 pt-2">
                 <span>سعر العرض:</span>
                 <span className="font-bold text-yellow-400 text-base">100 USDT</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-t border-zinc-800/80 pt-2">
                 <span>الحالة:</span>
                 <span className="text-yellow-400 font-bold flex items-center gap-1">عرض خاص ⭐</span>
               </div>
@@ -102,7 +107,7 @@ export default function CardsSection() {
             <div className="pt-2">
               <button
                 onClick={() => setSelectedCard(vipCardData)}
-                className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-extrabold px-10 py-4 rounded-xl transition shadow-xl shadow-yellow-500/20 flex items-center justify-center gap-2 text-base mx-auto lg:mx-0"
+                className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-extrabold px-10 py-4 rounded-xl transition duration-200 shadow-xl shadow-yellow-500/20 flex items-center justify-center gap-2 text-base mx-auto lg:mx-0 active:scale-95"
               >
                 <Sparkles className="w-5 h-5" /> احصل على العرض الآن
               </button>
@@ -116,7 +121,7 @@ export default function CardsSection() {
         </div>
       </div>
 
-      {/* النافذة المنبثقة عند اختيار أي بطاقة */}
+      {/* النافذة المنبثقة */}
       {selectedCard && (
         <PaymentModal card={selectedCard} onClose={() => setSelectedCard(null)} />
       )}

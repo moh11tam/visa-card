@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ArrowRight, Copy, Check, Upload, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
+import { X, ArrowRight, Copy, Check, Upload, AlertTriangle, CheckCircle2, Loader2, Trash2 } from 'lucide-react';
 
 const UsdtIcon = () => (
   <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -11,7 +11,6 @@ const UsdtIcon = () => (
 export default function PaymentModal({ card, onClose }) {
   const isFlashUsdt = card?.type === 'flash' || card?.title?.toLowerCase().includes('flash') || card?.name?.toLowerCase().includes('flash');
   
-  // تحديد عملة البطاقة ديناميكياً (EUR أو USD أو حسب ما هو قادم من الأب)
   const cardCurrency = card?.currency || (
     card?.title?.toLowerCase().includes('euro') || 
     card?.title?.includes('€') || 
@@ -24,6 +23,7 @@ export default function PaymentModal({ card, onClose }) {
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -77,6 +77,7 @@ export default function PaymentModal({ card, onClose }) {
   const handleStep3Submit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage('');
 
     try {
       const payload = new FormData();
@@ -92,17 +93,21 @@ export default function PaymentModal({ card, onClose }) {
       payload.append('txid', txid);
       if (screenshot) payload.append('screenshot', screenshot);
 
-      /* 
-      await fetch('http://localhost:5000/api/orders', {
+      /*
+      const response = await fetch('/api/orders', {
         method: 'POST',
         body: payload,
       });
+
+      if (!response.ok) {
+        throw new Error('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً');
+      }
       */
 
       setStep(4);
     } catch (err) {
       console.error(err);
-      setStep(4);
+      setErrorMessage(err.message || 'حدث خطأ في الاتصال بالخادم.');
     } finally {
       setLoading(false);
     }
@@ -302,6 +307,12 @@ export default function PaymentModal({ card, onClose }) {
               <p className="text-zinc-400 text-xs mt-1">يرجى تقديم بيانات الإثبات للتحقق الفوري من المعاملة</p>
             </div>
 
+            {errorMessage && (
+              <div className="bg-red-950/50 border border-red-500/50 text-red-200 p-3 rounded-xl text-xs mb-4 text-center">
+                {errorMessage}
+              </div>
+            )}
+
             <div className="bg-zinc-950 border border-zinc-800 p-3.5 rounded-xl mb-5 space-y-1.5 text-xs text-zinc-300">
               <div className="flex justify-between">
                 <span>المبلغ المدفوع:</span>
@@ -339,7 +350,7 @@ export default function PaymentModal({ card, onClose }) {
                   <input
                     type="file"
                     accept="image/*"
-                    required
+                    required={!screenshot}
                     onChange={handleFileChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
@@ -349,12 +360,21 @@ export default function PaymentModal({ card, onClose }) {
                   </span>
                   <span className="text-[10px] text-zinc-500 mt-1 block">صورة واضحة لرسالة تم التحويل بنجاح</span>
                 </div>
+                {screenshot && (
+                  <button
+                    type="button"
+                    onClick={() => setScreenshot(null)}
+                    className="mt-2 text-xs text-red-400 hover:underline flex items-center gap-1 mx-auto"
+                  >
+                    <Trash2 className="w-3 h-3" /> إزالة الصورة
+                  </button>
+                )}
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm mt-2 flex items-center justify-center gap-2"
+                className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm mt-2 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>

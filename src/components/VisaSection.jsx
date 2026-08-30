@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import VisaCard3D from './VisaCard3D'; // استدعاء المجسم الذي أرسلته
-import PaymentModal from './PaymentModal'; // استدعاء النافذة المنبثقة
+import VisaCard3D from './VisaCard3D'; // استدعاء المجسم الخاص بالبطاقة
+import PaymentModal from './PaymentModal'; // استدعاء النافذة المنبثقة للدفع
 
 export default function VisaSection() {
   // 1. حالة فتح النافذة المنبثقة لبطاقات الفيزا
@@ -26,7 +26,7 @@ export default function VisaSection() {
   };
 
   return (
-    <section className="bg-black text-white py-12 px-4 border-t border-zinc-900">
+    <section id="visa-cards-section" className="bg-black text-white py-12 px-4 border-t border-zinc-900 scroll-mt-6">
       <h2 className="text-3xl font-bold text-blue-400 mb-8 text-right">💳 بطاقات Visa (USD)</h2>
 
       {/* عرض البطاقات العادية */}
@@ -34,7 +34,7 @@ export default function VisaSection() {
         {visaCards.map((card) => (
           <div key={card.id} className="bg-zinc-950 p-4 rounded-3xl border border-zinc-800 space-y-4 text-center">
             
-            {/* هنا نستخدم مكونك VisaCard3D لعرض شكل البطاقة فقط */}
+            {/* عرض مجسم البطاقة 3D */}
             <VisaCard3D amount={card.balance} isVip={false} />
 
             <div className="flex justify-between items-center bg-zinc-900 p-3 rounded-xl text-sm">
@@ -42,10 +42,10 @@ export default function VisaSection() {
               <span className="text-blue-400 font-bold">{card.priceUsdt} USDT</span>
             </div>
 
-            {/* عند الضغط يتم حفظ بيانات البطاقة لتفتح النافذة المنبثقة */}
+            {/* زر الشراء والتمرير للحالة */}
             <button
               onClick={() => setSelectedCard(card)}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer active:scale-95"
             >
               شراء البطاقة
             </button>
@@ -57,18 +57,17 @@ export default function VisaSection() {
       <div className="max-w-md mx-auto mt-12 bg-zinc-950 p-6 rounded-3xl border border-amber-500/40 text-center space-y-4">
         <span className="text-xs bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-bold">عرض VIP خاص</span>
         
-        {/* نستخدم مكونك مرتين ولكن مع إعطائه isVip={true} */}
         <VisaCard3D amount={vipVisaCard.balance} isVip={true} />
 
         <button
           onClick={() => setSelectedCard(vipVisaCard)}
-          className="w-full bg-amber-500 hover:bg-amber-400 text-black font-black py-3 rounded-xl transition"
+          className="w-full bg-amber-500 hover:bg-amber-400 text-black font-black py-3 rounded-xl transition cursor-pointer active:scale-95"
         >
           شراء بطاقة VIP بـ 450 USDT
         </button>
       </div>
 
-      {/* 3. النافذة المنبثقة تفتح فقط عندما تختار بطاقة فيزا */}
+      {/* 3. نافذة الدفع المنبثقة */}
       {selectedCard && (
         <PaymentModal card={selectedCard} onClose={() => setSelectedCard(null)} />
       )}

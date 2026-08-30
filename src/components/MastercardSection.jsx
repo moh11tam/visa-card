@@ -70,7 +70,7 @@ export default function MastercardSection() {
   };
 
   return (
-    <div id="mastercard-tiktok-section" className="bg-black text-white py-14 px-4 border-t border-zinc-900 space-y-16 selection:bg-amber-500 selection:text-black">
+    <div id="mastercard-cards-section" className="bg-black text-white py-14 px-4 border-t border-zinc-900 space-y-16 selection:bg-amber-500 selection:text-black scroll-mt-6">
       
       {/* 🚀 1. الهيدر الإعلاني الرئيسي */}
       <section className="text-center max-w-4xl mx-auto space-y-4">
@@ -185,7 +185,7 @@ export default function MastercardSection() {
 
                 <button
                   onClick={() => setSelectedCard(card)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-xs"
+                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-xs cursor-pointer"
                 >
                   [ شراء البطاقة ]
                 </button>
@@ -253,7 +253,7 @@ export default function MastercardSection() {
           <div className="pt-2">
             <button
               onClick={() => setSelectedCard(specialOffer)}
-              className="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-amber-500/30 text-sm md:text-base hover:scale-105 active:scale-95"
+              className="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-amber-500/30 text-sm md:text-base hover:scale-105 active:scale-95 cursor-pointer"
             >
               [ احصل على العرض الآن ]
             </button>

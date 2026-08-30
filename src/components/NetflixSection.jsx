@@ -9,7 +9,7 @@ export default function NetflixSection({ onSelectCard }) {
       title: "اشتراك Netflix شهري",
       subtitle: "حساب خاص / شاشة واحدة",
       duration: "شهر واحد",
-      balance: "5$", // تخصيص القيمة للتخلص من المبلغ الافتراضي في المودال
+      balance: "5$", 
       priceUsdt: "5",
       price: "5",
       badge: "الأكثر طلباً",
@@ -58,7 +58,7 @@ export default function NetflixSection({ onSelectCard }) {
   ];
 
   return (
-    <section id="netflix" className="py-20 bg-black text-white relative overflow-hidden select-none">
+    <section id="netflix-section" className="py-20 bg-black text-white relative overflow-hidden select-none scroll-mt-6">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/10 blur-[160px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -114,10 +114,10 @@ export default function NetflixSection({ onSelectCard }) {
                 </ul>
               </div>
 
-              {/* استدعاء onSelectCard المُمررة من App.jsx */}
+              {/* زر الشراء والتمرير للحالة */}
               <button
                 onClick={() => onSelectCard && onSelectCard(card)}
-                className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-red-600/20"
+                className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-red-600/20 cursor-pointer"
               >
                 <span>شراء الآن</span>
                 <ArrowRight className="w-4 h-4 rotate-180" />
